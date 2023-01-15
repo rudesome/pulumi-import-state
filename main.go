@@ -1,15 +1,15 @@
 package main
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"net/http"
-	"os"
+  "bytes"
+  "context"
+  "encoding/json"
+  "fmt"
+  "io/ioutil"
+  "net/http"
+  "os"
   "os/exec"
-	"github.com/joho/godotenv"
+  "github.com/joho/godotenv"
 )
 
 const (
