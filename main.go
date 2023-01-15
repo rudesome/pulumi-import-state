@@ -7,9 +7,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-  "os"
+	"os"
   "os/exec"
-
 	"github.com/joho/godotenv"
 )
 
@@ -76,7 +75,6 @@ func PrettyJSON(jsonData []byte) {
 	err := json.Indent(&out, []byte(jsonData), "", "  ")
 	if err != nil {
 		fmt.Println(err.Error())
-		os.Exit(1)
 	}
 	fmt.Println(out.String())
 }
@@ -87,7 +85,6 @@ func (c *Client) GetRepos(ctx context.Context) (*Repos, error) {
   resp, err := c.Get(fmt.Sprintf("%s/user/repos?per_page=100", c.BaseURL))
 	if err != nil {
 		fmt.Println(err.Error())
-		os.Exit(1)
 	}
 
 	defer resp.Body.Close()
@@ -95,11 +92,7 @@ func (c *Client) GetRepos(ctx context.Context) (*Repos, error) {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println(err.Error())
-		os.Exit(1)
 	}
-
-	//PrettyJSON(body)
-  //os.Exit(1)
 
 	var data Repos
 	json.Unmarshal(body, &data)
@@ -113,14 +106,10 @@ func PulumiImport(r *Repos) {
 			continue
 		}
 
-    fmt.Println(v.Name)
-    //continue
-		//os.Exit(1)
-
-		// pulumi define shell command
+		// Pulumi define shell command
 		cmdStruct := exec.Command("pulumi", "import", "github:index/repository:Repository", v.Name, v.Name, "-y", "--skip-preview", "--protect=false")
     
-		// TODO: set dir as an argument to the function
+		// TODO: Set the -absolute path- argument to the function
 		cmdStruct.Dir = "/home/rudesome/git/pulumi-github/"
 
 		// Execute command
@@ -128,7 +117,6 @@ func PulumiImport(r *Repos) {
 
 		if err != nil {
 			fmt.Println(err.Error())
-			os.Exit(1)
 		}
 	}
 }
@@ -145,7 +133,6 @@ func main() {
 
 	if err != nil {
 		fmt.Println(err.Error())
-		os.Exit(1)
 	}
 
 	PulumiImport(res)
