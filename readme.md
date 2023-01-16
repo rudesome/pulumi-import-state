@@ -1,9 +1,9 @@
-# pulum-import-state
+# pulumi-import-state
 
 - GET private github repositories - by the PAT (Personal Access Token)
     - filter forks
-- Import github repos to pulumi stack (based on name) specified with cmdStruct path
-    - set github pages
+- (WIP) Import github repos to pulumi stack (based on name)
+
 
 ## instruction:
 
@@ -16,4 +16,8 @@ API_KEY="XXXXXXXXXXXXXXXXX"
 2. don't forget to set the pulumi code to keep the state as code configured
 
 
+## TODO:
+- Rework to module / pacakage
+- Let the user define the pulumi stack as argument..
+- Add more providers (Azure / AWS / Cloudflare / Kubernetes)
 
