@@ -126,12 +126,12 @@ func PulumiImport(r *Repos, path string) {
 		// TODO: check if path exists and absolute is
 		cmdStruct.Dir = path
 
-     //Execute command
-    _, err := cmdStruct.Output()
+		//Execute command
+		_, err := cmdStruct.Output()
 
-    if err != nil {
-    fmt.Println(err.Error())
-    }
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
 }
 
