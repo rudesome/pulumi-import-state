@@ -5,11 +5,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/joho/godotenv"
 	"io"
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
+
+	"github.com/joho/godotenv"
 )
 
 const (
@@ -123,15 +125,21 @@ func PulumiImport(r *Repos, path string) {
 			"--protect=false",
 		)
 
-		// TODO: check if path exists and absolute is
+    if !(filepath.IsAbs(path)) {
+      fmt.Println("Please enter the absolute path to the pulumi github directory")
+      return
+    }
+
 		cmdStruct.Dir = path
 
-		//Execute command
-		_, err := cmdStruct.Output()
+    fmt.Println("cmdStruct is: ", cmdStruct.Dir)
 
-		if err != nil {
-			fmt.Println(err.Error())
-		}
+		//Execute command
+    //_, err := cmdStruct.Output()
+
+    //if err != nil {
+      //fmt.Println(err.Error())
+    //}
 	}
 }
 
@@ -155,6 +163,6 @@ func main() {
 	// Check for pulumi prerequisites
 	// Login, Evaluated folder, Stack
 
-	// Path (absolute) as user input
+	// Path as user input
 	PulumiImport(repos, "/home/rudesome/github/pulumi-github")
 }
