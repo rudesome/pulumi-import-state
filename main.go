@@ -1,15 +1,15 @@
 package main
 
 import (
-  "bytes"
-  "context"
-  "encoding/json"
-  "fmt"
-  "io/ioutil"
-  "net/http"
-  "os"
-  "os/exec"
-  "github.com/joho/godotenv"
+	"bytes"
+	"context"
+	"encoding/json"
+	"fmt"
+	"github.com/joho/godotenv"
+	"io"
+	"net/http"
+	"os"
+	"os/exec"
 )
 
 const (
@@ -82,42 +82,56 @@ func PrettyJSON(jsonData []byte) {
 func (c *Client) GetRepos(ctx context.Context) (*Repos, error) {
 	fmt.Println("Getting your repos")
 
-  resp, err := c.Get(fmt.Sprintf("%s/user/repos?per_page=100", c.BaseURL))
+	resp, err := c.Get(fmt.Sprintf("%s/user/repos", c.BaseURL)) // ?per_page=100", c.BaseURL))
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
 	defer resp.Body.Close()
+	//fmt.Println(strings.Split(resp.Header.Get("Link"), ";")[0])
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
+
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
 	var data Repos
 	json.Unmarshal(body, &data)
+	fmt.Println(&data)
+
 	return &data, nil
 }
 
-func PulumiImport(r *Repos) {
+func PulumiImport(r *Repos, path string) {
 	for _, v := range *r {
 		// dont import forks..
 		if v.Fork == true {
 			continue
 		}
 
-		// Pulumi define shell command
-		cmdStruct := exec.Command("pulumi", "import", "github:index/repository:Repository", v.Name, v.Name, "-y", "--skip-preview", "--protect=false")
-    
-		// TODO: Set the -absolute path- argument to the function
-		cmdStruct.Dir = "/home/rudesome/git/pulumi-github/"
+		// Pulumi define shell command:
+		// `pulumi import [type] [name] [id] [flags]`
+		cmdStruct := exec.Command(
+			"pulumi",
+			"import",
+			"github:index/repository:Repository",
+			v.Name,
+			v.Name,
+			"-y",
+			"--skip-preview",
+			"--protect=false",
+		)
 
-		// Execute command
-		_, err := cmdStruct.Output()
+		// TODO: check if path exists and absolute is
+		cmdStruct.Dir = path
 
-		if err != nil {
-			fmt.Println(err.Error())
-		}
+     //Execute command
+    _, err := cmdStruct.Output()
+
+    if err != nil {
+    fmt.Println(err.Error())
+    }
 	}
 }
 
@@ -129,11 +143,18 @@ func main() {
 	}
 	c := NewClient(token)
 
-	res, err := c.GetRepos(nil)
+	repos, err := c.GetRepos(nil)
 
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
-	PulumiImport(res)
+	fmt.Println(repos)
+
+	// TODO:
+	// Check for pulumi prerequisites
+	// Login, Evaluated folder, Stack
+
+	// Path (absolute) as user input
+	PulumiImport(repos, "/home/rudesome/github/pulumi-github")
 }
