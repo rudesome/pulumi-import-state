@@ -4,20 +4,19 @@
     - filter forks
 - (WIP) Import github repos to pulumi stack (based on name)
 
+---
 
 ## instruction:
 
-1. rename sample.env to .env and set your own PAT github api token:
+- rename sample.env to .env and set your github PAT:
 
 ```bash
 API_KEY="XXXXXXXXXXXXXXXXX"
 ```
 
-2. don't forget to set the pulumi code to keep the state as code configured
-
+---
 
 ## TODO:
-- Rework to module / pacakage
-- Let the user define the pulumi stack as argument..
+- Rework to module / package
+- Let the user define the pulumi stack (folder?) as argument..
 - Add more providers (Azure / AWS / Cloudflare / Kubernetes)
-
