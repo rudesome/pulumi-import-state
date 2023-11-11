@@ -8,6 +8,7 @@
 
 ## instruction:
 
+- create new pulumi project / stack
 - rename sample.env to .env and set your github PAT:
 
 ```bash
