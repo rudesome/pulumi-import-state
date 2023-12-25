@@ -1,2 +1,4 @@
 .env
 /result/
+result
+.direnv
