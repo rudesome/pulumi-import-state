@@ -1,34 +1,37 @@
 {
   description = "Go pulumi importer";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+  };
 
-  outputs = inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "aarch64-darwin" "aarch64-linux" "x86_64-darwin" "x86_64-linux" ];
-      perSystem = { config, self', inputs', pkgs, system, ... }:
-        let
-          name = "pulumi-import-state";
-        in
-        {
-          devShells = {
-            default = pkgs.mkShell {
-              buildInputs = with pkgs; [
-                (pkgs.pulumi.withPackages (p: with p; [
-                  pulumi-language-go
-                ]))
-              ];
-            };
+  outputs = { self, nixpkgs }:
+    let
+      name = "pulumi-import-state";
+      system = "x86_64-linux";
+    in
+    {
+
+      packages.${system}.default =
+        with import nixpkgs { inherit system; };
+        pkgs.buildGoPackage {
+          inherit name;
+          src = ./.;
+          goPackagePath = "github.com/rudesome/${name}";
+          vendorHash = null;
+        };
+
+      devShells.${system}.default =
+        with import nixpkgs
+          {
+            inherit system;
           };
-          packages = {
-            default = pkgs.buildGoPackage {
-              inherit name;
-              src = ./.;
-              goPackagePath = "github.com/rudesome/${name}";
-              vendorHash = null;
-            };
-          };
+        pkgs.mkShell {
+          buildInputs = with pkgs; [
+            (pulumi.withPackages (p: with p; [
+              pulumi-language-go
+            ]))
+          ];
         };
     };
 }
-
