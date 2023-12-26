@@ -18,7 +18,7 @@ type Client struct {
 	HTTPClient *http.Client
 }
 
-func token(envName string) (string, error) {
+func Token(envName string) (string, error) {
 	err := godotenv.Load()
 	if err != nil {
 		fmt.Println(err.Error())

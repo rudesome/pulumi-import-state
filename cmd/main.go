@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-  "github/rudesome/pulumi-import-state/pkg/github"
+	"github.com/rudesome/pulumi-import-state/pkg/github"
 )
 
 const (
@@ -11,11 +11,11 @@ const (
 
 func main() {
 
-	token, err := token("API_KEY")
+	token, err := github.Token("API_KEY")
 	if err != nil {
 		fmt.Println(err)
 	}
-	c := NewClient(token)
+	c := github.NewClient(token)
 
 	repos, err := c.GetRepos(nil)
 
@@ -23,12 +23,13 @@ func main() {
 		fmt.Println(err.Error())
 	}
 
-	fmt.Println(repos)
+  //github.PrettyJSON(repos)
+  fmt.Println(repos)
 
 	// TODO:
 	// Check for pulumi prerequisites
 	// Login, Evaluated folder, Stack
 
 	// Path as user input
-	PulumiImport(repos, "/home/rudesome/github/pulumi-github")
+	//github.PulumiImport(repos, "/home/rudesome/github/pulumi-github")
 }
