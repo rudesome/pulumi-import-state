@@ -53,6 +53,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	req.Header.Add("Accept", "application/vnd.github+json")
 	req.Header.Add("Content-Type", "application/json")
 
+  // nested invocation of Get() function
 	return c.HTTPClient.Do(req)
 
 }

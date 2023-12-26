@@ -1,4 +1,4 @@
-.env
-/result/
-result
+pulumi-import-state
 .direnv
+.env
+result
