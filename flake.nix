@@ -40,10 +40,8 @@
           pkgs.dockerTools.buildImage {
             inherit name;
             tag = version;
-            #created = "now";
-            #contents = self.packages.${system}.default;
             config = {
-              Cmd = [ "${packages.${system}.default}/bin/${name}" ];
+              Cmd = [ "${self.packages.${system}.default}/bin/cmd" ];
             };
           };
       };
