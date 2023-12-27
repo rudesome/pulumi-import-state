@@ -9,23 +9,12 @@
     let
       name = "pulumi-import-state";
       system = "x86_64-linux";
+      version = "latest";
     in
     {
 
-      packages.${system}.default =
-        with import nixpkgs { inherit system; };
-        pkgs.buildGoPackage {
-          inherit name;
-          src = ./.;
-          goPackagePath = "github.com/rudesome/${name}";
-          vendorHash = null;
-        };
-
       devShells.${system}.default =
-        with import nixpkgs
-          {
-            inherit system;
-          };
+        with import nixpkgs { inherit system; };
         pkgs.mkShell {
           buildInputs = with pkgs; [
             (pulumi.withPackages (p: with p; [
@@ -33,5 +22,30 @@
             ]))
           ];
         };
+
+      packages.${system} = {
+        default =
+          with import nixpkgs { inherit system; };
+          pkgs.buildGoPackage {
+            inherit name;
+            src = ./.;
+            goPackagePath = "github.com/rudesome/${name}";
+            subPackages = [ "cmd" ];
+            vendorHash = null;
+          };
+
+        ## build docker image
+        docker =
+          with import nixpkgs { inherit system; };
+          pkgs.dockerTools.buildImage {
+            inherit name;
+            tag = version;
+            #created = "now";
+            #contents = self.packages.${system}.default;
+            config = {
+              Cmd = [ "${packages.${system}.default}/bin/${name}" ];
+            };
+          };
+      };
     };
 }
