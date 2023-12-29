@@ -19,7 +19,7 @@ type Repo struct {
 func (c *Client) GetRepos(ctx context.Context) (*Repos, error) {
 	fmt.Println("Getting your repos")
 
-	resp, err := c.Get(fmt.Sprintf("%s/user/repos", c.BaseURL)) // ?per_page=100", c.BaseURL))
+	resp, err := c.Get(fmt.Sprintf("%s/user/repos?per_page=100", c.BaseURL))
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -35,7 +35,6 @@ func (c *Client) GetRepos(ctx context.Context) (*Repos, error) {
 
 	var data Repos
 	json.Unmarshal(body, &data)
-	fmt.Println(&data)
 
 	return &data, nil
 }

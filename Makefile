@@ -8,7 +8,16 @@ compile: ## local build to binary
 
 docker:
 	@echo "build docker with nix"
-	nix build .#docker --json --no-link --print-build-logs
+	$(eval OUTPUT=$(shell sh -c "nix build .#docker --json --no-link --print-build-logs | jq -r \".[0].outputs.out\""))
+	docker load < ${OUTPUT}
+	docker run --env-file .env -it localhost/$(target)
+
+develop:
+	nix develop
+
+clean:
+	docker image rm localhost/$(target) -f
+	docker system prune -f
 
 .PHONY: help
 help:  ## this help messages

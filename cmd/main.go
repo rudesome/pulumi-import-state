@@ -2,16 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/rudesome/pulumi-import-state/pkg/github"
-)
 
-const (
-	baseURL = "https://api.github.com"
+	"github.com/rudesome/pulumi-import-state/pkg/github"
 )
 
 func main() {
 
 	token, err := github.Token("API_KEY")
+  //os.Getenv(github.EnvironmentVariableToken)
 	if err != nil {
 		fmt.Println(err)
 	}

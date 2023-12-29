@@ -12,12 +12,12 @@
 - rename sample.env to .env and set your github PAT:
 
 ```bash
-API_KEY="XXXXXXXXXXXXXXXXX"
+API_KEY=XXXXXXXXXXXXXXXXX
 ```
 
 ---
 
 ## TODO:
-- Rework to module / package
-- Let the user define the pulumi stack (folder?) as argument..
-- Add more providers (Azure / AWS / Cloudflare / Kubernetes)
+[x] Rework to module / package
+[ ] Let the user define the pulumi stack (folder?) as argument..
+[ ] Add more providers (Azure / AWS / Cloudflare / Kubernetes)

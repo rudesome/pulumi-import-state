@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 const (
 	baseURL = "https://api.github.com"
+	//
+	EnvironmentalVariableToken string = "API_KEY"
 )
 
 type Client struct {
@@ -19,12 +19,11 @@ type Client struct {
 }
 
 func Token(envName string) (string, error) {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println(err.Error())
-		return "", err
+	token := os.Getenv(EnvironmentalVariableToken)
+	if token == "" {
+		fmt.Printf("Unable to read %s environment variable. Empty\n", EnvironmentalVariableToken)
 	}
-	apiToken := fmt.Sprintf("token %s", os.Getenv(envName))
+	apiToken := fmt.Sprintf("token %s", token)
 
 	return apiToken, nil
 }
@@ -53,7 +52,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	req.Header.Add("Accept", "application/vnd.github+json")
 	req.Header.Add("Content-Type", "application/json")
 
-  // nested invocation of Get() function
+	// nested invocation of Get() function
 	return c.HTTPClient.Do(req)
 
 }

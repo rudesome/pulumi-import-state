@@ -21,6 +21,12 @@
               pulumi-language-go
             ]))
           ];
+          shellHook =
+            ''
+              set -a # automatically export all variables
+              source .env
+              set +a
+            '';
         };
 
       packages.${system} = {
@@ -30,7 +36,6 @@
             inherit name;
             src = ./.;
             goPackagePath = "github.com/rudesome/${name}";
-            subPackages = [ "cmd" ];
             vendorHash = null;
           };
 
@@ -43,6 +48,15 @@
             config = {
               Cmd = [ "${self.packages.${system}.default}/bin/cmd" ];
             };
+            copyToRoot =
+              with pkgs.dockerTools;
+              pkgs.buildEnv {
+                name = "image-root";
+                paths = [
+                  self.packages.${system}.default
+                  caCertificates
+                ];
+              };
           };
       };
     };
