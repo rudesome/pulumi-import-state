@@ -19,12 +19,12 @@ func main() {
 		fmt.Println(err.Error())
 	}
 
-  github.PrettyJSON(raw)
+	github.PrettyJSON(raw)
 
 	// TODO:
 	// Check for pulumi prerequisites
 	// Login, Evaluated folder, Stack
 
 	// Path as user input
-  github.PulumiImport(repos, "/home/rudesome/github/pulumi-github")
+	github.PulumiImport(repos, "/home/rudesome/github/pulumi-github")
 }
