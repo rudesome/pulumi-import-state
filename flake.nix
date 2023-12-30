@@ -9,7 +9,7 @@
     let
       name = "pulumi-import-state";
       system = "x86_64-linux";
-      version = "latest";
+      tag = "latest";
     in
     {
 
@@ -44,7 +44,7 @@
           with import nixpkgs { inherit system; };
           pkgs.dockerTools.buildImage {
             inherit name;
-            tag = version;
+            inherit tag;
             config = {
               Cmd = [ "${self.packages.${system}.default}/bin/cmd" ];
             };
