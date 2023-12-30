@@ -23,7 +23,7 @@
           ];
           shellHook =
             ''
-              set -a # automatically export all variables
+              set -a
               source .env
               set +a
             '';
@@ -48,15 +48,10 @@
             config = {
               Cmd = [ "${self.packages.${system}.default}/bin/cmd" ];
             };
+            # https://nixos.org/manual/nixpkgs/stable/#ssec-pkgs-dockerTools-helpers
             copyToRoot =
               with pkgs.dockerTools;
-              pkgs.buildEnv {
-                name = "image-root";
-                paths = [
-                  self.packages.${system}.default
-                  caCertificates
-                ];
-              };
+              [ caCertificates ];
           };
       };
     };
