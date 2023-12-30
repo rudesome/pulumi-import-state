@@ -18,7 +18,7 @@ type Client struct {
 	HTTPClient *http.Client
 }
 
-func Token(envName string) (string, error) {
+func Token() (string, error) {
 	token := os.Getenv(EnvironmentalVariableToken)
 	if token == "" {
 		fmt.Printf("Unable to read %s environment variable. Empty\n", EnvironmentalVariableToken)

@@ -16,7 +16,7 @@ type Repo struct {
 	Archived bool   `json:"archived"`
 }
 
-func (c *Client) GetRepos(ctx context.Context) (*Repos, error) {
+func (c *Client) GetRepos(ctx context.Context) (*Repos, []byte, error) {
 	fmt.Println("Getting your repos")
 
 	resp, err := c.Get(fmt.Sprintf("%s/user/repos?per_page=100", c.BaseURL))
@@ -25,7 +25,6 @@ func (c *Client) GetRepos(ctx context.Context) (*Repos, error) {
 	}
 
 	defer resp.Body.Close()
-	//fmt.Println(strings.Split(resp.Header.Get("Link"), ";")[0])
 
 	body, err := io.ReadAll(resp.Body)
 
@@ -36,5 +35,5 @@ func (c *Client) GetRepos(ctx context.Context) (*Repos, error) {
 	var data Repos
 	json.Unmarshal(body, &data)
 
-	return &data, nil
+	return &data, body, nil
 }
