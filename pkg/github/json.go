@@ -3,7 +3,7 @@ package github
 import (
 	"bytes"
 	"encoding/json"
-  "fmt"
+	"fmt"
 )
 
 func PrettyJSON(jsonData []byte) {
