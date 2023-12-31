@@ -45,7 +45,7 @@
           pkgs.dockerTools.buildImage {
             inherit name tag;
             config = {
-              Cmd = [ "${self.packages.${system}.default}/bin/cmd" ];
+              Cmd = [ "${self.packages.${system}.default}/bin/cmd" "test" ];
             };
             # https://nixos.org/manual/nixpkgs/stable/#ssec-pkgs-dockerTools-helpers
             copyToRoot =
