@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/rudesome/pulumi-import-state/pkg/github"
+	"github.com/rudesome/pulumi-import-state/pkg/cli"
 )
 
 func main() {
@@ -20,6 +22,10 @@ func main() {
 	}
 
 	github.PrettyJSON(raw)
+
+  cli.Start()
+
+
 
 	// TODO:
 	// Check for pulumi prerequisites

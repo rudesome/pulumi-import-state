@@ -8,16 +8,15 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func start() {
-    app := &cli.App{
-        Name:  "boom",
-        Usage: "make an explosive entrance",
-        Action: func(*cli.Context) error {
-            fmt.Println("boom! I say!")
-            return nil
-        },
-    }
+func Start() {
+	app := &cli.App{
+		Action: func(cCtx *cli.Context) error {
+			fmt.Printf("Hello %q", cCtx.Args().Get(0))
+			return nil
+		},
+	}
 
-    if err := app.Run(os.Args); err != nil {
-        log.Fatal(err)
-    }}
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
+}
