@@ -25,8 +25,6 @@ func main() {
 
   cli.Start()
 
-
-
 	// TODO:
 	// Check for pulumi prerequisites
 	// Login, Evaluated folder, Stack
