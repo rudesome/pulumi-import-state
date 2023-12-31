@@ -43,8 +43,7 @@
         docker =
           with import nixpkgs { inherit system; };
           pkgs.dockerTools.buildImage {
-            inherit name;
-            inherit tag;
+            inherit name tag;
             config = {
               Cmd = [ "${self.packages.${system}.default}/bin/cmd" ];
             };
