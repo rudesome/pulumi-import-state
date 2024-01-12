@@ -10,29 +10,34 @@
       name = "pulumi-import-state";
       system = "x86_64-linux";
       tag = "latest";
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
     in
     {
 
       devShells.${system}.default =
-        with import nixpkgs { inherit system; };
-        pkgs.mkShell {
-          buildInputs = with pkgs; [
-            (pulumi.withPackages (p: with p; [
-              pulumi-language-go
-            ]))
-          ];
-          shellHook =
-            ''
-              set -a
-              source .env
-              set +a
-            '';
-        };
+        with pkgs;
+        mkShell
+          {
+            buildInputs = with pkgs; [
+              (pulumi.withPackages (p: with p; [
+                pulumi-language-go
+              ]))
+            ];
+            shellHook =
+              ''
+                # allow to import env variable(s)
+                set -a
+                # source specific environmental variable(s)
+                source .env
+                # default (do not export new environmental variables)
+                set +a
+              '';
+          };
 
       packages.${system} = {
         default =
-          with import nixpkgs { inherit system; };
-          pkgs.buildGoPackage {
+          with pkgs;
+          buildGoPackage {
             inherit name;
             src = ./.;
             goPackagePath = "github.com/rudesome/${name}";
@@ -41,8 +46,8 @@
 
         ## build docker image
         docker =
-          with import nixpkgs { inherit system; };
-          pkgs.dockerTools.buildImage {
+          with pkgs.dockerTools;
+          buildImage {
             inherit name tag;
             config = {
               Cmd = [ "${self.packages.${system}.default}/bin/cmd" "test" ];
